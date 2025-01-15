@@ -7,6 +7,7 @@ import { IoMdAdd, IoMdRemove } from "react-icons/io";
 import { FaTrash } from "react-icons/fa";
 import axios from "axios";
 import styles from "./DeliveryAnimation.module.css";
+import { usePathname } from "next/navigation";
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -66,6 +67,7 @@ const Checkout = () => {
 
   const [formValid, setFormValid] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const { email, phone, address, gps, city } = formData;
@@ -76,6 +78,10 @@ const Checkout = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
 
   const cart_items = cartProducts.map((product) => ({
     _id: product._id,
@@ -236,7 +242,7 @@ const Checkout = () => {
                       layout
                       className="grid grid-cols-3 gap-4 py-4 items-center border-b border-gray-200 dark:border-gray-700 last:border-0"
                     >
-                      <div className="flex items-center gap-4">
+                      <div className="sm:flex-col items-center gap-4">
                         <motion.img
                           whileHover={{ scale: 1.05 }}
                           src={item.images[0]}
@@ -244,7 +250,7 @@ const Checkout = () => {
                           className="w-20 h-20 object-cover rounded-md"
                         />
                         <div>
-                          <h3 className="font-medium dark:text-white">
+                          <h3 className="font-medium dark:text-white mt-3">
                             {item.title}
                           </h3>
                         </div>

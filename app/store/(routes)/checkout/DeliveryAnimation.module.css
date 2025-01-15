@@ -1,0 +1,217 @@
+.delivery-animation {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #98c5e8;
+}
+
+.delivery-animation .background-stuff {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  animation: wrapperIn 2s;
+}
+
+.delivery-animation .background-stuff .bg {
+  position: absolute;
+  top: 0%;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: #636ed1;
+  animation: bgIn 4s 0s linear infinite;
+  transform: skewX(10deg);
+  z-index: 1;
+}
+
+.delivery-animation .background-stuff .bg-2 {
+  background: #8faaff;
+  animation: bgIn 4s 1s linear infinite;
+}
+
+.delivery-animation .background-stuff .bg-3 {
+  background: #5a73da;
+  animation: bgIn 4s 2s linear infinite;
+}
+
+.delivery-animation .background-stuff .ground {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: -1.875em;
+  height: 50%;
+  width: 100%;
+  background: #ffc253;
+  z-index: 2;
+}
+
+.delivery-animation .container {
+  height: 100%;
+  width: 100%;
+  display: table;
+  overflow: hidden;
+}
+
+.delivery-animation .car-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.delivery-animation .car-wrapper_inner {
+  position: relative;
+  z-index: 4;
+}
+
+.delivery-animation .car_outter {
+  transform: translateX(-100%);
+  position: relative;
+  animation: carDrive 5s 1s cubic-bezier(0.88, 0.08, 0.16, 1.1) infinite;
+}
+
+.delivery-animation .car {
+  width: 20em;
+  height: 12.5em;
+  position: relative;
+  opacity: 1;
+  margin: 0 auto;
+  z-index: 4;
+  animation: carMove 0.3s infinite;
+}
+
+.delivery-animation .car .body {
+  position: absolute;
+  top: 0;
+  left: 0.875em;
+  width: 14.375em;
+  height: 10em;
+  background: #fff;
+}
+
+.delivery-animation .car .body:before {
+  content: "";
+  position: absolute;
+  left: -0.875em;
+  border-radius: 10px 10px 0 0;
+  width: 15.875em;
+  z-index: 2;
+  height: 0.75em;
+  background: #3190dd;
+}
+
+.delivery-animation .car .wheel {
+  position: absolute;
+  width: 3.75em;
+  height: 3.75em;
+  background: #3c464c;
+  border-radius: 50%;
+  bottom: 0;
+  left: 3em;
+  z-index: 14;
+  animation: carMove 0.3s 0.2s;
+}
+
+.delivery-animation .car .wheel:nth-of-type(2) {
+  left: 13.125em;
+}
+
+.delivery-animation .wind .p {
+  position: absolute;
+  background: #fff;
+  border-radius: 0.625em;
+  height: 0.625em;
+}
+
+.delivery-animation .wind .p1 {
+  width: 4.375em;
+  right: 0;
+  top: 1.5625em;
+  animation: wind 1s -1s linear infinite;
+}
+
+.delivery-animation .wind .p2 {
+  width: 6.25em;
+  right: 2.5em;
+  top: 3.75em;
+  animation: wind 1s -2s linear infinite;
+}
+
+.delivery-animation .wind .p3 {
+  width: 3.125em;
+  right: 0em;
+  top: 6.5625em;
+  animation: wind 1s -1s linear infinite;
+}
+
+/* Keyframes */
+@keyframes carMove {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-1px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes bgIn {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+@keyframes wrapperIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes carDrive {
+  0% {
+    transform: translateX(-100%);
+  }
+  25% {
+    transform: translateX(0%);
+  }
+  70% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.delivery-animation .text-container {
+  position: absolute;
+  top: 20%; /* Adjust to position the text vertically on the car */
+  left: 10%; /* Adjust to center the text horizontally */
+  width: 80%; /* Keep text within the car's width */
+  text-align: center;
+  color: #000; /* Black text for visibility */
+  font-family: Arial, sans-serif;
+  font-size: 0.9em; /* Adjust font size to fit nicely on the car */
+}
+
+.delivery-animation .text-container h1 {
+  font-size: 1.2em; /* Larger font size for the title */
+  margin: 0;
+}
+
+.delivery-animation .text-container p {
+  font-size: 0.9em; /* Smaller font size for the description */
+  margin: 0.5em 0 0;
+}
+
+
+

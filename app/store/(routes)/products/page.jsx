@@ -43,17 +43,15 @@ export default async function AllProducts() {
                 className="rounded-2xl bg-white dark:bg-gray-800 hover:bg-black/80 dark:hover:bg-primary hover:text-white relative shadow-xl duration-300 group max-w-[300px] cursor-pointer"
                 key={product._id}
               >
-                <Link href={`/product/${product._id}`}>
+                <Link href={`/store/product/${product._id}`}>
                 {/* Image section */}
                 <div className="h-[100px]">
-                  <Image
-                    src={product.images[0]}
+                  <img
+                    src={product.images[0] || "/images/loadingImage.png"}
                     alt={product.title}
                     width={140} // You can adjust this value according to your needs
                     height={100} // Adjust the height as well
                     className="block mx-auto transform -translate-y-20 group-hover:scale-105 duration-300 drop-shadow-md"
-                    priority // Optionally add this if it's a critical image to preload
-                    sizes="(max-width: 640px) 100vw, 140px" // Ensures the image is responsive
                   />
                 </div>
 
