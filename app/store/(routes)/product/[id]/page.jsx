@@ -116,6 +116,105 @@
 //   );
 // }
 
+// import { mongooseConnect } from "@/lib/mongoose";
+// import { AddToCartButton } from "@/components/AddToCartButton";
+// import { Product } from "@/models/Product";
+// import { notFound } from "next/navigation";
+// import ProductImageCarousel from "@/components/ProductImageCarousel";
+// import { Share2 } from "lucide-react";
+
+
+// export async function generateMetadata({ params }) {
+//   const { id } = await params;
+
+//   // Connect to database and fetch product
+//   await mongooseConnect();
+//   const product = await Product.findById(id).populate("category").lean();
+
+//   if (!product) {
+//     return {
+//       title: "Product Not Found",
+//     };
+//   }
+
+//   return {
+//     title: `${product.title} | ${process.env.SITE_NAME}`,
+//     description: product.description,
+//     openGraph: {
+//       title: product.title,
+//       description: product.description,
+//       images: [product.images[0]], // Using the first image as a preview
+//     },
+//   };
+// }
+
+// export default async function ProductPage({ params }) {
+//   const { id } = await params;
+
+//   // Connect to database and fetch product
+//   await mongooseConnect();
+//   const product = await Product.findById(id).populate("category").lean();
+
+//   // If the product is not found, show a 404 page
+//   if (!product) {
+//     notFound();
+//   }
+
+//   const clientproduct = JSON.parse(JSON.stringify(product))
+
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+//       <div className="container mx-auto px-4 py-16">
+//         <div className="flex flex-col lg:flex-row gap-8">
+//           {/* Product Image Carousel */}
+//           <div className="lg:w-1/2">
+//             <ProductImageCarousel images={product?.images} />
+//           </div>
+
+//           {/* Product Info */}
+//           <div className="lg:w-1/2">
+//             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8">
+//               <h1 className="text-3xl font-bold mb-4">{product?.title}</h1>
+
+//               <p className="text-2xl font-bold text-primary mb-6">
+//                 ${product?.price}
+//               </p>
+
+//               <p className="text-gray-600 dark:text-gray-300 mb-6">
+//                 {product?.description}
+//               </p>
+
+//               <p className="text-sm text-gray-500 mb-4">
+//                 Category: {product?.category?.name || "Uncategorized"}
+//               </p>
+
+//               {/* Action Buttons */}
+//               <div className="flex gap-4">
+//                 {/* <button
+//                   className="flex-1 bg-primary text-white py-3 rounded-full flex items-center justify-center gap-2 hover:opacity-90"
+//                   onClick={() => addToCart(product)}
+//                 >
+//                   <ShoppingCart size={20} />
+//                   Add to Cart
+//                 </button> */}
+//                     <AddToCartButton
+//                     product={clientproduct}
+//                     className="flex-1 bg-primary text-white py-3 hover:opacity-90"
+//                     iconSize={20}
+//                     buttonText="Add to Cart"
+//                   />
+//                 <button className="w-12 h-12 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary">
+//                   <Share2 size={20} />
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 import { mongooseConnect } from "@/lib/mongoose";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { Product } from "@/models/Product";
@@ -123,17 +222,17 @@ import { notFound } from "next/navigation";
 import ProductImageCarousel from "@/components/ProductImageCarousel";
 import { Share2 } from "lucide-react";
 
-
 export async function generateMetadata({ params }) {
   const { id } = await params;
 
-  // Connect to database and fetch product
+  // Connect to the database and fetch product
   await mongooseConnect();
   const product = await Product.findById(id).populate("category").lean();
 
   if (!product) {
     return {
       title: "Product Not Found",
+      description: "The product you are looking for does not exist.",
     };
   }
 
@@ -143,7 +242,13 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: product.title,
       description: product.description,
-      images: [product.images[0]], // Using the first image as a preview
+      images: product.images ? [product.images[0]] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description: product.description,
+      image: product.images ? product.images[0] : null,
     },
   };
 }
@@ -151,17 +256,15 @@ export async function generateMetadata({ params }) {
 export default async function ProductPage({ params }) {
   const { id } = await params;
 
-  // Connect to database and fetch product
+  // Connect to the database and fetch product
   await mongooseConnect();
   const product = await Product.findById(id).populate("category").lean();
 
-  // If the product is not found, show a 404 page
   if (!product) {
     notFound();
   }
 
-  const clientproduct = JSON.parse(JSON.stringify(product))
-
+  const clientproduct = JSON.parse(JSON.stringify(product));
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -191,19 +294,12 @@ export default async function ProductPage({ params }) {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                {/* <button
-                  className="flex-1 bg-primary text-white py-3 rounded-full flex items-center justify-center gap-2 hover:opacity-90"
-                  onClick={() => addToCart(product)}
-                >
-                  <ShoppingCart size={20} />
-                  Add to Cart
-                </button> */}
-                    <AddToCartButton
-                    product={clientproduct}
-                    className="flex-1 bg-primary text-white py-3 hover:opacity-90"
-                    iconSize={20}
-                    buttonText="Add to Cart"
-                  />
+                <AddToCartButton
+                  product={clientproduct}
+                  className="flex-1 bg-primary text-white py-3 hover:opacity-90"
+                  iconSize={20}
+                  buttonText="Add to Cart"
+                />
                 <button className="w-12 h-12 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary">
                   <Share2 size={20} />
                 </button>

@@ -20,6 +20,7 @@ const OrderSchema = new Schema(
     totalAmount: Number,
     totalQty: Number,
     orderReference: String,
+    paymentReference: String,
     paymentMethod: String,
     paid: Boolean,
     paymentStatus: { 

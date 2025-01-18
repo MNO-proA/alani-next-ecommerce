@@ -10,6 +10,22 @@ body {
   font-family: "Advent Pro", serif;
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+
+
+
 
 /* .aboreto-regular {
   font-family: "Aboreto", serif;
@@ -43,5 +59,8 @@ body {
   font-variation-settings:
     "wdth" 100;
 } */
+
+
+
 
 

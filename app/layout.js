@@ -12,7 +12,6 @@
 // import { CartContextProvider } from "@/lib/CartContext";
 // import { InitializeCartContext } from "@/lib/clientAddToCart";
 
-
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
 //   subsets: ["latin"],
@@ -29,7 +28,7 @@
 // // };
 
 // export default function StoreLayout({ children }) {
-  
+
 //   useEffect(() => {
 //     AOS.init({
 //       offset: 100,
@@ -49,37 +48,37 @@
 //          <InitializeCartContext />
 //             <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
 //               <Navbar />
-//               {children} 
+//               {children}
 //               <Footer />
 //           </div>
 //         </CartContextProvider>
-        
+
 //       </body>
 //     </html>
 //   );
 // }
 
-
-'use client';
+"use client";
 
 import "./globals.css";
-import { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css"; // Import AOS styles
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { CartContextProvider } from "@/lib/CartContext";
 import { InitializeCartContext } from "@/lib/clientAddToCart";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 import MobileNavigation from "@/components/MobileNavigation";
 
-
 export default function StoreLayout({ children }) {
-
   const pathname = usePathname(); // Get the current pathname
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
 
   useEffect(() => {
     AOS.init({
@@ -91,21 +90,21 @@ export default function StoreLayout({ children }) {
     AOS.refresh();
   }, []);
 
-   const isAdminPath = pathname.includes('admin');
+  const isAdminPath = pathname.includes("admin");
 
   return (
-    <html lang="en">       
-    <body>
-     <CartContextProvider>
-      <InitializeCartContext />
-      <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
-        {!isAdminPath && <Navbar />} 
-        <main>{children}</main>
-        {!isAdminPath && <Footer />} 
-        {!isAdminPath && <MobileNavigation/>}
-      </div>
-    </CartContextProvider>
-    </body>
-   </html>
+    <html lang="en">
+      <body>
+        <CartContextProvider>
+          <InitializeCartContext />
+          <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
+            {!isAdminPath && <Navbar />}
+            <main>{children}</main>
+            {!isAdminPath && <Footer />}
+            {!isAdminPath && <MobileNavigation />}
+          </div>
+        </CartContextProvider>
+      </body>
+    </html>
   );
 }

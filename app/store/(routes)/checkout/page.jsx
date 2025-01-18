@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useContext } from "react";
@@ -67,11 +68,13 @@ const Checkout = () => {
 
   const [formValid, setFormValid] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname();  
+  
+
 
   useEffect(() => {
-    const { email, phone, address, gps, city } = formData;
-    setFormValid(Boolean(email && phone && address && gps && city));
+    const { email, phone, address, city } = formData;
+    setFormValid(Boolean(email && phone && address && city));
   }, [formData]);
 
   const handleInputChange = (e) => {
@@ -79,9 +82,7 @@ const Checkout = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [pathname]);
+
 
   const cart_items = cartProducts.map((product) => ({
     _id: product._id,
@@ -97,23 +98,97 @@ const Checkout = () => {
     cart_items,
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if(formData.paymentMethod === "paystack"){
+  //    const response = await axios.post("/api/checkout", orderData);
+  //   if (response.data.url) {
+  //     window.location = response.data.url;
+  //   } 
+  //   } else if(formData.paymentMethod === "cashOnDelivery"){
+  //     const response = await axios.post("/api/cashOnDelivery", orderData);
+  //     if(response.data.success){
+  //       clearCart();
+  //       setIsSuccess(true)
+        
+  //     }
+  //   }
+    
+  // };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   try {
+  //     if (formData.paymentMethod === "paystack") {
+  //       const response = await axios.post("/api/checkout", orderData);
+  //       if (response.data.url) {
+  //         window.location = response.data.url;
+  //       }
+  //     } else if (formData.paymentMethod === "cashOnDelivery") {
+  //       const response = await axios.post("/api/cashOnDelivery", orderData);
+  //       if (response.data.success) {
+  //         clearCart();
+  //         setIsSuccess(true);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     // Log the error for debugging purposes
+  //     console.error("Error occurred during checkout:", error);
+  
+  //     // Gracefully handle different types of errors
+  //     if (error.response) {
+  //       // Server responded with a status code outside the 2xx range
+  //       alert(`Error: ${error.response.data.message || "Something went wrong. Please try again."}`);
+  //     } else if (error.request) {
+  //       // Request was made but no response received
+  //       alert("Network error: Unable to connect to the server. Please check your connection.");
+  //     } else {
+  //       // Something happened in setting up the request
+  //       alert("Unexpected error: Please try again later.");
+  //     }
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(formData.paymentMethod === "paystack"){
-     const response = await axios.post("/api/checkout", orderData);
-    if (response.data.url) {
-      window.location = response.data.url;
-    } 
-    } else if(formData.paymentMethod === "cashOnDelivery"){
-      const response = await axios.post("/api/cashOnDelivery", orderData);
-      if(response.data.success){
-        clearCart();
-        setIsSuccess(true)
-        
+  
+    try {
+      if (formData.paymentMethod === "paystack") {
+        const response = await axios.post("/api/checkout", orderData);
+  
+        if (response.data.url) {
+          window.location = response.data.url;
+        } else {
+          alert(response.data.message || "Payment initialization failed. Please try again.");
+        }
+      } else if (formData.paymentMethod === "cashOnDelivery") {
+        const response = await axios.post("/api/cashOnDelivery", orderData);
+  
+        if (response.data.success) {
+          clearCart();
+          setIsSuccess(true);
+        } else {
+          alert(response.data.message || "Order creation failed. Please try again.");
+        }
+      }
+    } catch (error) {
+      console.error("Error occurred during checkout:", error);
+  
+      if (error.response) {
+        // API returned an error
+        alert(
+          error.response.data.message ||
+            `Server error: ${error.response.status} - ${error.response.statusText}`
+        );
+      } else if (error.request) {
+        // Request made but no response received
+        alert("Network error: Unable to connect to the server. Please check your connection.");
+      } else {
+        // Unexpected client-side error
+        alert("Unexpected error: Please try again later.");
       }
     }
-    
   };
+  
 
   // ========================================================
 
@@ -124,6 +199,8 @@ const Checkout = () => {
     if (window?.location.href.includes("success")) {
       setIsSuccess(true);
       clearCart();
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, []);
 
@@ -416,7 +493,7 @@ const Checkout = () => {
                 }`}
                 disabled={!formValid}
               >
-                {formData.paymentMethod === "payNow" ? "Pay Now" : "Order Now"}
+                {formData.paymentMethod === "paystack" ? "Pay Now" : "Order Now"}
               </motion.button>
             </form>
           </motion.div>

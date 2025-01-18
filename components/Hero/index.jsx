@@ -5,6 +5,7 @@
 import React from "react";
 import Slider from "react-slick";
 
+
 const ImageList = [
   {
     id: 1,
@@ -29,7 +30,7 @@ const ImageList = [
   },
 ];
 
-const HeroWithVideoBanner = () => {
+const FeatureBanner = () => {
   let settings = {
     dots: false,
     arrows: false,
@@ -46,7 +47,7 @@ const HeroWithVideoBanner = () => {
   return (
     <>
       {/* Video Banner */}
-      <div className="relative w-full h-[650px] sm:h-[750px]">
+      {/* <div className="relative w-full h-[650px] sm:h-[750px]">
         <video
           className="object-cover w-full h-full"
           autoPlay
@@ -55,7 +56,7 @@ const HeroWithVideoBanner = () => {
         >
           <source src="/videos/alani-beauty.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-black opacity-40"></div> {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black opacity-40"></div> 
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10">
           <h2 className="text-4xl sm:text-6xl font-semibold mb-4">
             Limited Time Offers!
@@ -67,7 +68,7 @@ const HeroWithVideoBanner = () => {
             Shop Now
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Hero Section */}
       <div className="relative overflow-hidden min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200 ">
@@ -133,7 +134,7 @@ const HeroWithVideoBanner = () => {
   );
 };
 
-export default HeroWithVideoBanner;
+export default FeatureBanner;
 // "use client";
 
 // import React, { useState } from "react";

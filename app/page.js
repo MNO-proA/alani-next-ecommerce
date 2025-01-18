@@ -1,35 +1,43 @@
+// import AlaniStore from '@/clients/AlaniStore';
 
-'use client'
+// export const metadata = {
+//   title: `${process.env.SITE_NAME}`,
+//   description:
+//     "Explore our collection of top-quality products for men and women.",
+// };
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Import the correct router from 'next/navigation'
-import Hero from '../components/Hero';
-import Subscribe from '../components/Subscribe';
-import CategoryCarousel from "@/components/CategoryCarousel";
+// export default function Home() {
+//   return (
+//       <AlaniStore/>
+//   );
+// }
+
+
+
+import Head from 'next/head';
+import AlaniStore from '@/clients/AlaniStore';
+
+export const metadata = {
+  title: `${process.env.SITE_NAME}`,
+  description:
+    "Explore Alani, your go-to beauty and accessories shop for Turmeric black soap, bags, earrings, and more.",
+};
 
 export default function Home() {
-  const router = useRouter();
-
-
-  useEffect(() => {
-    // Check if we are in the browser environment and window is available
-    if (typeof window !== "undefined") {
-      const pathname = window.location.pathname;
-      if (pathname.includes('admin')) {
-        // Redirect to /admin if the pathname includes "admin"
-        router?.push('/admin');
-      }
-    }
-  }, [router]);
-
   return (
-    <div>
-      <Hero />
-      <CategoryCarousel />
-      <Subscribe />
-    </div>
+    <>
+      <Head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta property="og:title" content={metadata.title} />
+        <meta property="og:description" content={metadata.description} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:title" content={metadata.title} />
+        <meta name="twitter:description" content={metadata.description} />
+        {/* Add more meta tags as needed */}
+      </Head>
+      <AlaniStore/>
+      {/* Your home page content goes here */}
+    </>
   );
 }
-
-
-

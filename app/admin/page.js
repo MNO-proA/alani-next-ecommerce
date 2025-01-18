@@ -10,7 +10,7 @@ export default function Admin() {
   return (
     <>
       <DefaultLayout>
-        {/* <Dashboard /> */}
+        <Dashboard />
         <div>Hello there, no dashboard for now</div>
       </DefaultLayout>
     </>
