@@ -108,9 +108,9 @@ const DarkMode = () => {
             theme === "light" ? "opacity-0 scale-50" : "opacity-100 scale-100"
           }`}
       />
-        <span className="group-hover:block hidden transition-all duration-200">
+        {/* <span className="group-hover:block hidden transition-all duration-200">
         {theme === "dark" ? "Dark Mode" : "Light Mode"}
-      </span>
+      </span> */}
     </button>
   );
 };
