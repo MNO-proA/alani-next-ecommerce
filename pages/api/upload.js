@@ -27,7 +27,7 @@ export default async function handle(req, res) {
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
       },
       requestHandler: {
-        requestTimeout: 5000, // 5 second timeout for requests
+        requestTimeout: 50000, // 50 second timeout for requests
       },
     });
 

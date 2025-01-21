@@ -180,6 +180,7 @@
 //           {
 //             paid: true,
 //             paymentStatus: 'completed',
+//             paystackStatus: data.status,
 //             paymentData: {
 //               transactionId: data.id,
 //               amountPaid: data.amount / 100, // Convert from kobo/cents to main currency
@@ -211,3 +212,90 @@
 //     bodyParser: true, // Changed to true for Paystack webhook
 //   }
 // };
+
+import {mongooseConnect} from "@/lib/mongoose";
+import {buffer} from 'micro';
+import {Order} from "@/models/Order";
+import crypto from 'crypto';
+
+export default async function handler(req,res) {
+  try {
+    await mongooseConnect();
+    // Verify Paystack webhook signature
+    const hash = crypto
+      .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY)
+      .update(JSON.stringify(req.body))
+      .digest('hex');
+    
+    if (hash !== req.headers['x-paystack-signature']) {
+      return res.status(400).json({ message: 'Invalid signature' });
+    }
+
+    const event = req.body;
+    // Handle different event types
+    if (event.event === 'charge.success') {
+      const { data } = event;
+      const metadata = typeof data.metadata === 'string'
+        ? JSON.parse(data.metadata)
+        : data.metadata;
+
+        
+      // Update order status for successful payment
+      if (data.status === 'success') {
+        await Order.findOneAndUpdate(
+          { paymentReference: data.reference },
+          {
+            paid: true,
+            paymentStatus: 'completed',
+            paystackStatus: data.status,
+            paymentData: {
+              transactionId: data.id,
+              amountPaid: data.amount / 100,
+              paymentMethod: data.channel,
+              paidAt: data.paid_at,
+              currency: data.currency,
+              gatewayResponse: data.gateway_response
+            }
+          }
+        );
+        console.log('Payment successful for order:', data.reference);
+      }
+    } else if (event.event === 'charge.failed') {
+      const { data } = event;
+      
+      // Update order status for failed payment
+      await Order.findOneAndUpdate(
+        { paymentReference: data.reference },
+        {
+          paid: false,
+          paymentStatus: 'failed',
+          paystackStatus: data.status,
+          paymentData: {
+            transactionId: data.id,
+            attemptedAmount: data.amount / 100,
+            failureReason: data.gateway_response,
+            failedAt: new Date().toISOString(),
+            currency: data.currency,
+            gatewayResponse: data.gateway_response
+          }
+        }
+      );
+      
+      console.log('Payment failed for order:', data.reference, 'Reason:', data.gateway_response);
+    }
+
+    res.status(200).json({ message: 'Webhook processed successfully' });
+  } catch (error) {
+    console.error('Webhook processing error:', error);
+    res.status(500).json({
+      message: 'Webhook processing failed',
+      error: error.message
+    });
+  }
+}
+
+export const config = {
+  api: {
+    bodyParser: true,
+  }
+};

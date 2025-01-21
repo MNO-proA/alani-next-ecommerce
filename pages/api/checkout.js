@@ -53,7 +53,7 @@ export default async function handler(req,res) {
       amount: Math.round(totalAmount * 100), // Convert to smallest currency unit (kobo/cents)
       currency: 'GHS', // Or 'USD' depending on your requirements
       reference: orderReference,
-      callback_url: process.env.PUBLIC_URL + '/checkout?success=1',
+      callback_url: process.env.PUBLIC_URL + '/checkout?processing=1',
       metadata: JSON.stringify(metadata)
     };
 

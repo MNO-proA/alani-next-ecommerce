@@ -25,6 +25,7 @@ export default function ProductForm({
   images: existingImages,
   category: assignedCategory,
   properties: assignedProperties,
+  outOfStock: existingOutOfStock,
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDescription || "");
@@ -36,13 +37,13 @@ export default function ProductForm({
   const [images, setImages] = useState(existingImages || []);
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [outOfStock, setOutOfStock] = useState(existingOutOfStock || false);
   const router = useRouter();
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   useEffect(() => {
     axios.get("/api/categories").then((result) => setCategories(result.data));
   }, []);
-
 
   async function saveProduct(ev) {
     ev.preventDefault();
@@ -53,6 +54,7 @@ export default function ProductForm({
       images,
       category,
       properties: productProperties,
+      outOfStock,
     };
 
     try {
@@ -85,23 +87,23 @@ export default function ProductForm({
     const files = ev.target?.files;
     if (files?.length > 0) {
       setIsUploading(true);
-  
+
       const newLinks = []; // Temporary array to store new links
       try {
         for (const file of files) {
           const data = new FormData();
           data.append("file", file);
-  
+
           const res = await axios.post("/api/upload", data);
           console.log(res.data.links);
-  
+
           // Add links to the temporary array
           newLinks.push(...res.data.links);
         }
-  
+
         // Update the state once with all new links
         setImages((oldImages) => [...oldImages, ...newLinks]);
-  
+
         // Optionally, show a success message
         // Swal.fire({
         //   icon: "success",
@@ -121,9 +123,8 @@ export default function ProductForm({
       }
     }
   }
-  
-// =========================================
- 
+
+  // =========================================
 
   const propertiesToFill = [];
   if (categories.length > 0 && category) {
@@ -202,16 +203,16 @@ export default function ProductForm({
                   ))}
                 </ReactSortable>
                 {isUploading && (
-                    <div className="w-24 h-24 flex items-center justify-center border border-stroke rounded-lg">
-                      <Spinner />
-                    </div>
-                  )}
+                  <div className="w-24 h-24 flex items-center justify-center border border-stroke rounded-lg">
+                    <Spinner />
+                  </div>
+                )}
                 {/* New Upload Component */}
                 <ImageUpload
                   onUpload={uploadImages}
                   isUploading={isUploading}
                 />
-          
+
                 {/* <label className="w-24 h-24 flex flex-col items-center justify-center border-2 border-dashed border-stroke rounded-lg cursor-pointer hover:border-primaryAdmin transition-colors">
                   <Upload size={20} className="text-body" />
                   <span className="text-xs text-body mt-1">Upload</span>
@@ -288,6 +289,20 @@ export default function ProductForm({
                 </select>
               </div>
             ))}
+            <div className="space-y-2">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={outOfStock}
+                  onChange={(ev) => setOutOfStock(ev.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primaryAdmin/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-danger"></div>
+                <span className="ml-3 text-sm font-medium text-black">
+                  Out of Stock
+                </span>
+              </label>
+            </div>
 
             {/* Description */}
             <div className="space-y-2">

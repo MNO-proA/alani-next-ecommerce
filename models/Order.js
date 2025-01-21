@@ -22,6 +22,7 @@ const OrderSchema = new Schema(
     orderReference: String,
     paymentReference: String,
     paymentMethod: String,
+    paystackStatus: String,
     paid: Boolean,
     paymentStatus: { 
       type: String, 
@@ -47,21 +48,3 @@ export const Order = models?.Order || model("Order", OrderSchema);
 
 
 
-// In your Order model
-// {
-//   // ... existing fields ...
-//   paymentReference: { type: String },
-//   paymentStatus: { 
-//     type: String, 
-//     enum: ['pending', 'completed', 'failed'],
-//     default: 'pending'
-//   },
-//   paymentData: {
-//     transactionId: String,
-//     amountPaid: Number,
-//     paymentMethod: String,
-//     paidAt: Date,
-//     currency: String,
-//     gatewayResponse: String
-//   }
-// }

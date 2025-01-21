@@ -1,17 +1,3 @@
-// import AlaniStore from '@/clients/AlaniStore';
-
-// export const metadata = {
-//   title: `${process.env.SITE_NAME}`,
-//   description:
-//     "Explore our collection of top-quality products for men and women.",
-// };
-
-// export default function Home() {
-//   return (
-//       <AlaniStore/>
-//   );
-// }
-
 
 
 import Head from 'next/head';

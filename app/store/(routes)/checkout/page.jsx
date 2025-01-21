@@ -9,6 +9,9 @@ import { FaTrash } from "react-icons/fa";
 import axios from "axios";
 import styles from "./DeliveryAnimation.module.css";
 import { usePathname } from "next/navigation";
+import SuccessPage from "@/components/Success";
+import ProcessingPage from "@/components/Processing";
+import FailedPage from "@/components/Failed";
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -68,6 +71,8 @@ const Checkout = () => {
 
   const [formValid, setFormValid] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [isFailed, setIsFailed] = useState(false);
   const pathname = usePathname();  
   
 
@@ -98,56 +103,6 @@ const Checkout = () => {
     cart_items,
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if(formData.paymentMethod === "paystack"){
-  //    const response = await axios.post("/api/checkout", orderData);
-  //   if (response.data.url) {
-  //     window.location = response.data.url;
-  //   } 
-  //   } else if(formData.paymentMethod === "cashOnDelivery"){
-  //     const response = await axios.post("/api/cashOnDelivery", orderData);
-  //     if(response.data.success){
-  //       clearCart();
-  //       setIsSuccess(true)
-        
-  //     }
-  //   }
-    
-  // };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  
-  //   try {
-  //     if (formData.paymentMethod === "paystack") {
-  //       const response = await axios.post("/api/checkout", orderData);
-  //       if (response.data.url) {
-  //         window.location = response.data.url;
-  //       }
-  //     } else if (formData.paymentMethod === "cashOnDelivery") {
-  //       const response = await axios.post("/api/cashOnDelivery", orderData);
-  //       if (response.data.success) {
-  //         clearCart();
-  //         setIsSuccess(true);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     // Log the error for debugging purposes
-  //     console.error("Error occurred during checkout:", error);
-  
-  //     // Gracefully handle different types of errors
-  //     if (error.response) {
-  //       // Server responded with a status code outside the 2xx range
-  //       alert(`Error: ${error.response.data.message || "Something went wrong. Please try again."}`);
-  //     } else if (error.request) {
-  //       // Request was made but no response received
-  //       alert("Network error: Unable to connect to the server. Please check your connection.");
-  //     } else {
-  //       // Something happened in setting up the request
-  //       alert("Unexpected error: Please try again later.");
-  //     }
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -191,7 +146,44 @@ const Checkout = () => {
   
 
   // ========================================================
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    if (window?.location.href.includes("processing")) {
+      setIsProcessing(true);
 
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, []);
+
+  if (isProcessing) {
+    return (
+      <ProcessingPage/>
+    );
+    
+  }
+
+    // ========================================================
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    if (window?.location.href.includes("failed")) {
+      setIsFailed(true);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, []);
+
+  if (isFailed) {
+    return (
+      <FailedPage/>
+    );
+    
+  }
+  // =====================================================================
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
@@ -206,75 +198,11 @@ const Checkout = () => {
 
   if (isSuccess) {
     return (
-      <div className={styles["delivery-animation"]}>
-        <div className={styles["container"]}>
-          <div className={styles["car-wrapper"]}>
-            <div className={styles["car-wrapper_inner"]}>
-              <div className={styles["car_outter"]}>
-                <div className={styles["car"]}>
-                  {/* Car body */}
-                  <div className={styles["body"]}>
-                    <div className={styles["text-container"]}>
-                      <h1>Thanks for your order!</h1>
-                      <p>Your product is on route.</p>
-                    </div>
-                  </div>
-                  {/* Decorations */}
-                  <div className={styles["decos"]}>
-                    <div className={styles["line-bot"]}></div>
-                    <div className={styles["door"]}>
-                      <div className={styles["handle"]}></div>
-                      <div className={styles["bottom"]}></div>
-                    </div>
-                    <div className={styles["window"]}></div>
-                    <div className={styles["light"]}></div>
-                    <div className={styles["light-front"]}></div>
-                    <div className={styles["antenna"]}></div>
-                    <div className={styles["ice-cream"]}>
-                      <div className={styles["cone"]}></div>
-                    </div>
-                  </div>
-                  {/* Wheels */}
-                  <div>
-                    <div className={styles["wheel"]}></div>
-                    <div className={styles["wheel"]}></div>
-                  </div>
-                  {/* Wind */}
-                  <div className={styles["wind"]}>
-                    <div className={`${styles["p"]} ${styles["p1"]}`}></div>
-                    <div className={`${styles["p"]} ${styles["p2"]}`}></div>
-                    <div className={`${styles["p"]} ${styles["p3"]}`}></div>
-                    <div className={`${styles["p"]} ${styles["p4"]}`}></div>
-                    <div className={`${styles["p"]} ${styles["p5"]}`}></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* Background */}
-        <div className={styles["background-stuff"]}>
-          <div className={styles["bg"]}></div>
-          <div className={`${styles["bg"]} ${styles["bg-2"]}`}></div>
-          <div className={`${styles["bg"]} ${styles["bg-3"]}`}></div>
-          <div className={styles["ground"]}></div>
-        </div>
-      </div>
+      <SuccessPage/>
     );
     
   }
-
-  <div className={styles["delivery-animation"]}>
-  <div className={styles["car"]}>
-    <div className={styles["body"]}></div>
-    <div className={styles["wheel"]}></div>
-    <div className={styles["wheel"]}></div>
-    <div className={styles["light"]}></div>
-    <div className={styles["light-front"]}></div>
-    <div className={styles["antenna"]}></div>
-  </div>
-</div>
-  // =====================================================================
+    // =====================================================================
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-16 transition-colors duration-300">

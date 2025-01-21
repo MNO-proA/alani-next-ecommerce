@@ -61,7 +61,7 @@ export default async function handle(req, res) {
     }
 
     if (method === 'POST') {
-      const { title, description, price, images, category, properties } = req.body;
+      const { title, description, price, images, category, properties, outOfStock, } = req.body;
       const productDoc = await Product.create({
         title,
         description,
@@ -69,6 +69,7 @@ export default async function handle(req, res) {
         images,
         category,
         properties,
+        outOfStock,
       });
       res.json(productDoc);
     }
@@ -82,6 +83,7 @@ export default async function handle(req, res) {
         images,
         category,
         properties,
+        outOfStock,
       }, { new: true });
       if (!product) {
         return res.status(404).json({ error: 'Product not found' });
