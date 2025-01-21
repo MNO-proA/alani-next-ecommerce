@@ -49,6 +49,7 @@ const ProcessingPage = () => {
       try {
         if (!reference) return; // Don't make API call without reference
 
+        console.lg(reference)
         const res = await axios.get(`/api/orders/${reference}`);
         
         if (res.data.paystackStatus === "success" && res.data.paymentStatus === 'completed') {
@@ -103,3 +104,5 @@ const ProcessingPage = () => {
 };
 
 export default ProcessingPage;
+
+// https://alani-next-ecommerce.onrender.com/store/checkout?processing=1&trxref=ORDER-1737478120987-9a981366-4b13-4ce8-988f-57d386234dc5&reference=ORDER-1737478120987-9a981366-4b13-4ce8-988f-57d386234dc5
