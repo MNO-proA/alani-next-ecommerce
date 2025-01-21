@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './DeliveryAnimation.module.css';
 
 const SuccessPage = () => {
 
@@ -74,3 +75,6 @@ const SuccessPage = () => {
 
 
 export default SuccessPage
+
+
+
