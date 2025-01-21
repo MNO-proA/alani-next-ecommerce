@@ -4,7 +4,6 @@
 import React from "react";
 import { ShoppingCart, CheckCircle } from "lucide-react"; // Update with your icon library if needed
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { addToCart } from "@/lib/clientAddToCart";
 
 export const AddToCartButton = ({

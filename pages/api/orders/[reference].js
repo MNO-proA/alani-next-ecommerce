@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Payment reference is required' });
     }
 
-    const order = await Order.findOne({ paymentReference: reference });
+    const order = await Order.findOne({ orderReference: reference });
     
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });

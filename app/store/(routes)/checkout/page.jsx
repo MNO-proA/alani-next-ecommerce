@@ -76,10 +76,10 @@ const Checkout = () => {
   
 
 
-  useEffect(() => {
-    const { email, phone, address, city } = formData;
-    setFormValid(Boolean(email && phone && address && city));
-  }, [formData]);
+  // useEffect(() => {
+  //   const { email, phone, address, city } = formData;
+  //   setFormValid(Boolean(email && phone && address && city));
+  // }, [formData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -143,64 +143,103 @@ const Checkout = () => {
     }
   };
   
+  // ========================================================
+ // Combine all your page state checks into a single useEffect
+ useEffect(() => {
+  if (typeof window === "undefined") return;
+
+  const url = window.location.href;
+  if (url.includes("success")) {
+    setIsSuccess(true);
+    clearCart();
+  } else if (url.includes("processing")) {
+    setIsProcessing(true);
+  } else if (url.includes("failed")) {
+    setIsFailed(true);
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, []);
+
+// Form validation effect
+useEffect(() => {
+  const { email, phone, address, city } = formData;
+  setFormValid(Boolean(email && phone && address && city));
+}, [formData]);
+
+// Render different pages based on state
+if (isProcessing) {
+  return <ProcessingPage />;
+}
+
+if (isFailed) {
+  return <FailedPage />;
+}
+
+if (isSuccess) {
+  return <SuccessPage />;
+}
+
+// Rest of your component code...
+
 
   // ========================================================
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    if (window?.location.href.includes("processing")) {
-      setIsProcessing(true);
+  // useEffect(() => {
+  //   if (typeof window === "undefined") {
+  //     return;
+  //   }
+  //   if (window?.location.href.includes("processing")) {
+  //     setIsProcessing(true);
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, []);
+  //     window.scrollTo({ top: 0, behavior: "smooth" });
+  //   }
+  // }, []);
 
-  if (isProcessing) {
-    return (
-      <ProcessingPage/>
-    );
+  // if (isProcessing) {
+  //   return (
+  //     <ProcessingPage/>
+  //   );
     
-  }
+  // }
 
     // ========================================================
 
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    if (window?.location.href.includes("failed")) {
-      setIsFailed(true);
+  // useEffect(() => {
+  //   if (typeof window === "undefined") {
+  //     return;
+  //   }
+  //   if (window?.location.href.includes("failed")) {
+  //     setIsFailed(true);
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, []);
+  //     window.scrollTo({ top: 0, behavior: "smooth" });
+  //   }
+  // }, []);
 
-  if (isFailed) {
-    return (
-      <FailedPage/>
-    );
+  // if (isFailed) {
+  //   return (
+  //     <FailedPage/>
+  //   );
     
-  }
+  // }
   // =====================================================================
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    if (window?.location.href.includes("success")) {
-      setIsSuccess(true);
-      clearCart();
+  // useEffect(() => {
+  //   if (typeof window === "undefined") {
+  //     return;
+  //   }
+  //   if (window?.location.href.includes("success")) {
+  //     setIsSuccess(true);
+  //     clearCart();
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, []);
+  //     window.scrollTo({ top: 0, behavior: "smooth" });
+  //   }
+  // }, []);
 
-  if (isSuccess) {
-    return (
-      <SuccessPage/>
-    );
+  // if (isSuccess) {
+  //   return (
+  //     <SuccessPage/>
+  //   );
     
-  }
+  // }
     // =====================================================================
 
   return (
@@ -431,3 +470,50 @@ const Checkout = () => {
 };
 
 export default Checkout;
+
+
+// const Checkout = () => {
+//   const [formData, setFormData] = useState({/*...*/});
+//   const [formValid, setFormValid] = useState(false);
+//   const [isSuccess, setIsSuccess] = useState(false);
+//   const [isProcessing, setIsProcessing] = useState(false);
+//   const [isFailed, setIsFailed] = useState(false);
+  
+//   // Combine all your page state checks into a single useEffect
+//   useEffect(() => {
+//     if (typeof window === "undefined") return;
+
+//     const url = window.location.href;
+//     if (url.includes("success")) {
+//       setIsSuccess(true);
+//       clearCart();
+//     } else if (url.includes("processing")) {
+//       setIsProcessing(true);
+//     } else if (url.includes("failed")) {
+//       setIsFailed(true);
+//     }
+
+//     window.scrollTo({ top: 0, behavior: "smooth" });
+//   }, []);
+
+//   // Form validation effect
+//   useEffect(() => {
+//     const { email, phone, address, city } = formData;
+//     setFormValid(Boolean(email && phone && address && city));
+//   }, [formData]);
+
+//   // Render different pages based on state
+//   if (isProcessing) {
+//     return <ProcessingPage />;
+//   }
+
+//   if (isFailed) {
+//     return <FailedPage />;
+//   }
+
+//   if (isSuccess) {
+//     return <SuccessPage />;
+//   }
+
+//   // Rest of your component code...
+// };

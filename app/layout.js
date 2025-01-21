@@ -72,7 +72,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { usePathname } from "next/navigation";
 import MobileNavigation from "@/components/MobileNavigation";
-// import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function StoreLayout({ children }) {
   const pathname = usePathname(); // Get the current pathname
@@ -101,7 +101,7 @@ export default function StoreLayout({ children }) {
           <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
             {!isAdminPath && <Navbar />}
             <main>{children}</main>
-            {/* <ToastContainer /> */}
+            <ToastContainer />
             {!isAdminPath && <Footer />}
             {!isAdminPath && <MobileNavigation />}
           </div>

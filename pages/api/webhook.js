@@ -242,8 +242,8 @@ export default async function handler(req,res) {
         
       // Update order status for successful payment
       if (data.status === 'success') {
-        await Order.findOneAndUpdate(
-          { paymentReference: data.reference },
+        const order = await Order.findOneAndUpdate(
+          { orderReference: data.reference },
           {
             paid: true,
             paymentStatus: 'completed',
@@ -258,14 +258,15 @@ export default async function handler(req,res) {
             }
           }
         );
-        console.log('Payment successful for order:', data.reference);
+        console.log('Payment successful for order:', order.paymentStatus);
+        console.log('Payment successful for order:', order.paystackStatus);
       }
     } else if (event.event === 'charge.failed') {
       const { data } = event;
       
       // Update order status for failed payment
-      await Order.findOneAndUpdate(
-        { paymentReference: data.reference },
+      const order = await Order.findOneAndUpdate(
+        { orderReference: data.reference },
         {
           paid: false,
           paymentStatus: 'failed',
@@ -281,7 +282,7 @@ export default async function handler(req,res) {
         }
       );
       
-      console.log('Payment failed for order:', data.reference, 'Reason:', data.gateway_response);
+      console.log('Payment failed for order:', order.paystackStatus, 'Reason:', data.gateway_response);
     }
 
     res.status(200).json({ message: 'Webhook processed successfully' });
