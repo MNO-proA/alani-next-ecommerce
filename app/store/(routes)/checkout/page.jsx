@@ -7,7 +7,6 @@ import { CartContext } from "@/lib/CartContext";
 import { IoMdAdd, IoMdRemove } from "react-icons/io";
 import { FaTrash } from "react-icons/fa";
 import axios from "axios";
-import styles from "./DeliveryAnimation.module.css";
 import { usePathname } from "next/navigation";
 import SuccessPage from "@/components/Success";
 import ProcessingPage from "@/components/Processing";
